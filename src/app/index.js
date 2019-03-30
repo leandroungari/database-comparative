@@ -22,7 +22,7 @@ export default class App {
     return this;
   }
 
-  start() {
+  play() {
     if (this.cmd) 
       this.cmd.render();
   }
