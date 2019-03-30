@@ -1,0 +1,25 @@
+{
+  "name": "database-comparative",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "babel-node src/index.js",
+    "build": "babel src --out-dir dist",
+    "play": "node dist/index.js"
+  },
+  "repository": "https://github.com/leandroungari/database-comparative.git",
+  "author": "Leandro Ungari <leandroungari@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.4.0",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.4.2"
+  },
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "fast-csv": "^2.4.1",
+    "readline-sync": "^1.4.9"
+  }
+}
