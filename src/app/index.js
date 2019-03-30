@@ -15,8 +15,10 @@ export default class App {
   }
 
   interpreter(cmd) {
-    this.cmd = cmd;
-    this.cmd.app = () => this;
+    if (cmd !== undefined) {
+      this.cmd = cmd;
+      this.cmd.app = () => this;
+    } 
     return this;
   }
 
