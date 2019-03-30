@@ -23,8 +23,8 @@ export default class Interpreter {
     while(this.isRunning) {
       
       readLineSync.promptCL({
-        "load-dataset": (type, name, from) => {
-          loadDataset({type, name, from});
+        "load-dataset": async (type, name, from) => {
+          await loadDataset({type, name, from});
         },
         "list-dataset": () => {
           listDataset();

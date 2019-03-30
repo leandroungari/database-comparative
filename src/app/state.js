@@ -14,7 +14,6 @@ const store = (filePath, data) => {
  
   const contentString = JSON.stringify(data);
   fs.writeFileSync(filePath, contentString);
-  fs.closeSync();
 }
 
 const loadState = () => 
