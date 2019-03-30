@@ -1,9 +1,12 @@
-export const loadDataset = (app, options) => {
-  
-  //console.log(app, options);
+import fs from "fs";
+import csv from "fast-csv";
+import app from "../app";
+
+export const loadDataset = async (options) => {
+    
   switch(options.type) {
     case "csv":
-      readCSVFile(options.from)      
+      await readCSVFile(options.from)      
       .then(data => {
         app.createDataset(options.name, data);
       });

@@ -1,14 +1,28 @@
-export default class App {
+import {
+  loadState,
+  storeState,
+  loadDataset,
+  storeDataset,
+  stateExists,
+  datasetExists
+} from "./state";
+
+class App {
 
   constructor() {
     this.cmd = undefined;
-    this.listOfDatabases = [];
-    this.listOfDatasets = [];
+    
+    if (!stateExists()) storeState({
+      datasets: []
+    });
+
+    if (!datasetExists()) storeDataset({
+      datasets: []
+    })
   }
 
   databases(list = []) {
     this.listOfDatabases = [
-      ...this.listOfDatabases,
       ...list
     ];
     return this;
@@ -17,9 +31,29 @@ export default class App {
   interpreter(cmd) {
     if (cmd !== undefined) {
       this.cmd = cmd;
-      this.cmd.app = () => this;
     } 
     return this;
+  }
+
+  createDataset(name, data) {
+    const state = loadState();
+    state.datasets = [
+      ...state.datasets,
+      {name, size: data.length}
+    ];
+    storeState(state);
+
+    const file = loadDataset();
+    file.datasets = [
+      ...file.datasets,
+      {name, data}
+    ];
+    storeDataset(file);
+  }
+
+  listDataset() {
+    const state = loadState();
+    return state.datasets;
   }
 
   play() {
@@ -27,3 +61,6 @@ export default class App {
       this.cmd.render();
   }
 }
+
+const app = new App();
+export default app;

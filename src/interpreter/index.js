@@ -1,22 +1,40 @@
 import readLineSync from "readline-sync";
 
 import { loadDataset } from "../commands/loadDataset";
+import { listDataset } from "../commands/listDataset";
 
 export default class Interpreter {
   constructor() {
-    
+    this.isRunning = false;
   }
 
+  start() {
+    this.isRunning = true;
+    return this;
+  }
+
+  stop() {
+    this.isRunning = false;
+    return this;
+  }
 
   render() {
 
-    readLineSync.promptCLLoop({
-      "load-dataset": (type, name, from) => {
-        loadDataset(this.app(), {type, name, from});
-      },
-      "exit": () => true
-    }, {
-      limit: null,
-    });
+    while(this.isRunning) {
+      
+      readLineSync.promptCL({
+        "load-dataset": (type, name, from) => {
+          loadDataset({type, name, from});
+        },
+        "list-dataset": () => {
+          listDataset();
+        },
+        "exit": () => {
+          this.stop();
+        }
+      }, {
+        limit: null,
+      });
+    }
   }
 }
