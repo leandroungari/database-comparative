@@ -1,37 +1,39 @@
 import fs from "fs";
-import csv from "fast-csv";
 import app from "../app";
 
-export const loadDataset = async (options) => {
-    
+export const loadDataset = (options) => {
+  
   switch(options.type) {
     case "csv":
-      await readCSVFile(options.from)      
-      .then(data => {
-        app.createDataset(options.name, data);
-      });
+      const data = readCSVFile(options.from);      
+      app.createDataset(options.name, data);
+      
       break;
     case "json":
-      const data = readJSONFile(options.from);
-      app.createDataset(options.name, data);
+      const result = readJSONFile(options.from);
+      app.createDataset(options.name, result);
       break;
   }
 }
 
 const readCSVFile = filePath => {
+    const data = fs
+      .readFileSync(filePath, "utf8");
+    const [header, ...items] = new String(data).split("\n");
+  
+    const headerItems = header.split(",");
+    if (items[items.length - 1] === '') items.pop(); 
+    const result = items.map(item => {
 
-  return new Promise((resolve, reject) => {
-    const stream = fs.createReadStream(filePath);
-    const result = [];
-    csv
-      .fromStream(stream, {headers: true})
-      .on("data", data => {
-        result.push(data);
+      const element = {};
+      const itemValues = item.split(",");
+      headerItems.forEach((headerItem, index) => {
+        element[headerItem] = itemValues[index];
       })
-      .on("end", () => {
-        resolve(result);
-      });
-  });
+      return element;
+    });
+
+  return result;
 }
 
 const readJSONFile = filepath => {

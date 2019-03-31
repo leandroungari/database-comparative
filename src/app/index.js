@@ -37,6 +37,13 @@ class App {
 
   createDataset(name, data) {
     const state = loadState();
+  
+    if(
+      state.datasets
+      .map(a => a.name)
+      .includes(name)
+    ) return;
+
     state.datasets = [
       ...state.datasets,
       {name, size: data.length}
@@ -48,6 +55,27 @@ class App {
       ...file.datasets,
       {name, data}
     ];
+    storeDataset(file);
+  }
+
+  deleteDataset(name) {
+    const state = loadState();
+
+    if (
+      !state.datasets
+      .map(a => a.name)
+      .includes(name)
+    ) return;
+
+    state.datasets = 
+      state.datasets
+      .filter(a => a.name !== name);
+    storeState(state);
+
+    const file = loadDataset();
+    file.datasets = 
+      file.datasets
+      .filter(a => a.name !== name);
     storeDataset(file);
   }
 
