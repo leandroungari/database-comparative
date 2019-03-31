@@ -1,9 +1,20 @@
 import app from "./app";
-import Interpreter from "./interpreter";
-
-const cmd = new Interpreter();
+import interpreter from "./interpreter";
+import {
+  cmd, 
+  dataset,
+  database
+} from "./commands";
 
 app
   .databases()
-  .interpreter(cmd.start())
+  .interpreter(
+    interpreter
+    .commands({
+      ...cmd, 
+      ...dataset,
+      ...database
+    })
+    .start()
+  )
   .play();

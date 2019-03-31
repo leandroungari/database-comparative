@@ -1,12 +1,9 @@
 import readLineSync from "readline-sync";
 
-import { loadDataset } from "../commands/loadDataset";
-import { listDataset } from "../commands/listDataset";
-import { deleteDataset } from "../commands/deleteDataset";
-
-export default class Interpreter {
+class Interpreter {
   constructor() {
     this.isRunning = false;
+    this.listOfCommands = {};
   }
 
   start() {
@@ -16,6 +13,11 @@ export default class Interpreter {
 
   stop() {
     this.isRunning = false;
+    return this;
+  }
+
+  commands(commands = {}) {
+    this.listOfCommands = commands;
     return this;
   }
 
@@ -58,21 +60,10 @@ export default class Interpreter {
 
   render() {
     
-    this.prompt({
-      "load-dataset": (type, name, from) => {
-        loadDataset({type, name, from});
-      },
-      "list-dataset": () => {
-        listDataset();
-      },
-      "delete-dataset": (name) => {
-        deleteDataset(name);
-      },
-      "exit": () => {
-        this.stop();
-      }
-    });
-      
-    
+    this.prompt(this.listOfCommands);
   }
 }
+
+const interpreter = new Interpreter();
+
+export default interpreter;

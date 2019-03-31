@@ -28,6 +28,15 @@ class App {
     return this;
   }
 
+  database(name) {
+    const database = this.listOfDatabases
+      .filter(a => a.name === name)[0];
+    
+    if (!database) console
+      .log("database not found.");
+    return database;
+  }
+
   interpreter(cmd) {
     if (cmd !== undefined) {
       this.cmd = cmd;
