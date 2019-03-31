@@ -128,6 +128,11 @@ class App {
     storeTest(file);
   }
 
+  listTest() {
+    const file = loadTest();
+    return file.tests;
+  }
+
   updateTest(command) {
     const file = loadTest();
     let test = this.getTest(); 
