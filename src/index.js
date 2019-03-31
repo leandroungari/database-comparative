@@ -3,7 +3,8 @@ import interpreter from "./interpreter";
 import {
   cmd, 
   dataset,
-  database
+  database,
+  test
 } from "./commands";
 
 app
@@ -13,7 +14,8 @@ app
     .commands({
       ...cmd, 
       ...dataset,
-      ...database
+      ...database,
+      ...test
     })
     .start()
   )

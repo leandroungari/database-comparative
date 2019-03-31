@@ -1,4 +1,5 @@
 import readLineSync from "readline-sync";
+import app from "../app";
 
 class Interpreter {
   constructor() {
@@ -40,6 +41,19 @@ class Interpreter {
         commands[
           currentCommand.type
         ](...currentCommand.options);
+
+        if(
+          app.thereIsTest() && 
+          currentCommand.type !== "start-test"
+        ) {
+          
+          app.updateTest({
+            command: message.trim(),
+            stats: {
+              
+            }
+          })
+        }
       }
       else {
         console.log("command not found, try again.");
