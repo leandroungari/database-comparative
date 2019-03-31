@@ -2,6 +2,7 @@ import readLineSync from "readline-sync";
 
 import { loadDataset } from "../commands/loadDataset";
 import { listDataset } from "../commands/listDataset";
+import { deleteDataset } from "../commands/deleteDataset";
 
 export default class Interpreter {
   constructor() {
@@ -39,7 +40,7 @@ export default class Interpreter {
         ](...currentCommand.options);
       }
       else {
-        console.log("  command not found, try again.");
+        console.log("command not found, try again.");
       }
     }
   }
@@ -63,6 +64,9 @@ export default class Interpreter {
       },
       "list-dataset": () => {
         listDataset();
+      },
+      "delete-dataset": (name) => {
+        deleteDataset(name);
       },
       "exit": () => {
         this.stop();

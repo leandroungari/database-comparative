@@ -13,6 +13,8 @@ export const loadDataset = (options) => {
       const result = readJSONFile(options.from);
       app.createDataset(options.name, result);
       break;
+    default:
+      return;
   }
 }
 
