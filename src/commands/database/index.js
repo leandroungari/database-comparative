@@ -7,9 +7,15 @@ const databaseCommands = {
     datasetName
   ) => {
     
-    if (app.database(databaseType)) 
-      app.database(databaseType)
+    if (app.database(databaseType)) {
+      const insertedItems = app
+      .database(databaseType)
       .insert(databaseName, datasetName);
+    
+      console.log(
+        `this commands inserts ${insertedItems} item(s).`
+      );
+    }
   },
   "read-database": (
     databaseType, 
