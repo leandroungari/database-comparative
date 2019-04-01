@@ -1,4 +1,5 @@
 import app from "../../app";
+import interpreter from "../interpreter";
 
 const databaseCommands = {
   "insert-database": (
@@ -7,14 +8,16 @@ const databaseCommands = {
     datasetName
   ) => {
     
-    const db = app
-    .database(databaseType, databaseName);
-    if (db) {
+    app
+    .database(databaseType, databaseName, () => {
+      interpreter.time().start();
       const insertedItems = db.insert(datasetName);
+      interpreter.time().end();
       console.log(
         `this commands inserts ${insertedItems} item(s).`
       );
-    }
+    });
+    
   },
   "read-database": (
     databaseType, 
@@ -26,7 +29,9 @@ const databaseCommands = {
     .database(databaseType, databaseName);
     
     if(db) {
+      interpreter.time().start();
       const result = db.read(tableName, condition);
+      interpreter.time().end();
 
       if (result.length <= 30) {
         result.forEach((item, index) => 
@@ -47,9 +52,10 @@ const databaseCommands = {
     const db = app
     .database(databaseType, databaseName);
     if (db) {
+      interpreter.time().start();
       const updatedItems = db
       .update(tableName, condition, values);
-      
+      interpreter.time().end();
       console.log(
         `this commands updates ${updatedItems} item(s).`
       );
@@ -59,8 +65,10 @@ const databaseCommands = {
     const db = app
     .database(databaseType, databaseName);
     if (db) {
+      interpreter.time().start();
       const deletedItems = db
-        .delete(tableName, condition);
+      .delete(tableName, condition);
+      interpreter.time().end();
       
       console.log(
         `this commands deletes ${deletedItems} item(s).`

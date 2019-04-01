@@ -6,23 +6,9 @@ export default class MongoDB {
     this.database = undefined;
   }
 
-  /*connect(databaseName) {
-    this.database = await new Promise(
-      (resolve, reject) => {
-        MongoClient.connect(
-          `mongodb://localhost:27017/${databaseName}`,
-          (error, db) => {
-            if(error) reject(error);
-            resolve(db);
-          }
-        );
-      }
-    )
-    .then(result => result)
-    .catch(error => {
-      throw new Error(error);
-    });
-  }*/
+  connect(databaseName, callback) {
+    
+  }
 
   insert() {
     interpreter.time().start();
