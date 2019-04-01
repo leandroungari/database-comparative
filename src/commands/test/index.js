@@ -15,6 +15,11 @@ const testCommands = {
   },
   "end-test": () => {
     app.saveTest();
+  },
+  "show-stats": (name) => {
+    const test = app.getTest(name);
+
+    console.log("stats", test);
   }
 }
 
