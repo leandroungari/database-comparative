@@ -153,12 +153,14 @@ class App {
     }
   }
 
-  getTest() {
+  getTest(name = undefined) {
     const state = loadState();
-    
+    if (name === undefined) {
+      name = state.currentTest;
+    }
     const file = loadTest();
     const test = file.tests.filter(
-      a => a.name === state.currentTest
+      a => a.name === name
     )[0]; 
 
     return test;
