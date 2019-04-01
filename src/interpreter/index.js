@@ -5,6 +5,7 @@ class Interpreter {
   constructor() {
     this.isRunning = false;
     this.listOfCommands = {};
+    this.currentTimer = undefined;
   }
 
   start() {
@@ -14,6 +15,11 @@ class Interpreter {
 
   stop() {
     this.isRunning = false;
+    return this;
+  }
+
+  timer(timer) {
+    this.currentTimer = timer;
     return this;
   }
 
@@ -38,10 +44,14 @@ class Interpreter {
         Object.keys(commands)
         .includes(currentCommand.type)
       ) {
+
+        this.currentTimer.start();
+        ///////////////////////////
         commands[
           currentCommand.type
         ](...currentCommand.options);
-
+        ///////////////////////////
+        this.currentTimer.end();
         if(
           app.thereIsTest() && 
           currentCommand.type !== "start-test"
@@ -50,7 +60,7 @@ class Interpreter {
           app.updateTest({
             command: message.trim(),
             stats: {
-              
+              time: this.currentTimer.timeInMs()
             }
           })
         }
