@@ -20,7 +20,9 @@ class Test {
       file.tests.map(a => a.name)
       .includes(name)
     ) {
-      console.log("you cannot have two tests case with same name.");
+      console.log(
+        "you cannot have two tests case with same name."
+      );
       return;
     }
 
