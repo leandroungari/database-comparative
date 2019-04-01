@@ -28,7 +28,7 @@ class Interpreter {
     return this;
   }
 
-  prompt(commands = {}) {
+  prompt() {
     while(this.isRunning) {
       setTimeout(() => {
         
@@ -38,36 +38,44 @@ class Interpreter {
         limit: null
       });
 
-      const currentCommand = this.processMessage(message);
+      this.run(message);
+    }
+  }
 
-      if(
-        Object.keys(commands)
-        .includes(currentCommand.type)
-      ) {
+  run(message, noTest = false) {
 
-        this.currentTimer.start();
-        ///////////////////////////
-        commands[
-          currentCommand.type
-        ](...currentCommand.options);
-        ///////////////////////////
-        this.currentTimer.end();
-        if(
-          app.thereIsTest() && 
-          currentCommand.type !== "start-test"
-        ) {
-          
-          app.updateTest({
-            command: message.trim(),
-            stats: {
-              time: this.currentTimer.timeInMs()
-            }
-          })
-        }
-      }
-      else {
-        console.log("command not found, try again.");
-      }
+    const currentCommand = this.processMessage(message);
+
+    if(
+      Object.keys(this.listOfCommands)
+      .includes(currentCommand.type)
+    ) {
+
+      this.currentTimer.start();
+      ///////////////////////////
+      this.listOfCommands[
+        currentCommand.type
+      ](...currentCommand.options);
+      ///////////////////////////
+      this.currentTimer.end();
+        
+      if (!noTest) this
+        .processingTest(currentCommand, message);
+    }
+    else {
+      console.log("command not found, try again.");
+    }
+  }
+
+  processingTest(currentCommand, message) {
+    if(
+      app.tester().thereIsTestCase() && 
+      currentCommand.type !== "start-test-case"
+    ) {
+      
+      app.tester().updateTestCase({
+        command: message.trim(),
+      })
     }
   }
 
@@ -84,7 +92,7 @@ class Interpreter {
 
   render() {
     
-    this.prompt(this.listOfCommands);
+    this.prompt();
   }
 }
 

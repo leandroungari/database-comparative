@@ -1,19 +1,19 @@
 class Timer {
   constructor() {
-    this.start = undefined;
-    this.end = undefined;
+    this.timeOne = undefined;
+    this.timeTwo = undefined;
   }
 
   start() {
-    this.start = process.hrtime();
+    this.timeOne = process.hrtime();
   }
 
   end() {
-    this.end = process.hrtime(this.start);
+    this.timeTwo = process.hrtime(this.timeOne);
   }
 
   timeInMs() {
-    return this.end[1]/1000000;
+    return this.timeTwo[1]/1000000;
   }
 }
 

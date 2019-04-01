@@ -2,6 +2,7 @@ import fs from "fs";
 
 const stateFilePath = "./app.json";
 const datasetFilePath = "./dataset.json";
+const testCaseFilePath = "./test-case.json";
 const testFilePath = "./test.json";
 
 const load = (filePath) => {
@@ -32,6 +33,13 @@ const storeDataset = dataset =>
 const datasetExists = () => 
   fs.existsSync(datasetFilePath);
 
+const loadTestCase = () => 
+  load(testCaseFilePath);
+const storeTestCase = test => 
+  store(testCaseFilePath, test);
+const testCaseExists = () => 
+  fs.existsSync(testCaseFilePath);
+
 const loadTest = () => 
   load(testFilePath);
 const storeTest = test => 
@@ -40,6 +48,10 @@ const testExists = () =>
   fs.existsSync(testFilePath);
   
 export {
+  loadTestCase,
+  storeTestCase,
+  testCaseExists,
+
   loadState,
   storeState,
   stateExists,

@@ -1,6 +1,8 @@
+#app files
 app.json
 dataset.json
 test.json
+test-case.json
 
 # Logs
 logs

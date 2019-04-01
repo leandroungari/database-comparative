@@ -20,11 +20,12 @@ const databaseCommands = {
   "read-database": (
     databaseType, 
     databaseName, 
+    tableName,
     condition = {}
   ) => {
     if (app.database(databaseType)) {
       const result = app.database(databaseType)
-      .read(databaseName, condition);
+      .read(databaseName, tableName, condition);
 
       if (result.length <= 30) {
         result.forEach((item, index) => 
@@ -38,24 +39,25 @@ const databaseCommands = {
   "update-database": (
     databaseType, 
     databaseName, 
+    tableName,
     condition = {}, 
     values = {}
   ) => {
     if (app.database(databaseType)) {
       const updatedItems = app
         .database(databaseType)
-        .update(databaseName, condition, values);
+        .update(databaseName, tableName, condition, values);
       
       console.log(
         `this commands updates ${updatedItems} item(s).`
       );
     }
   },
-  "delete-database": (databaseType, databaseName, condition = {}) => {
+  "delete-database": (databaseType, databaseName, tableName, condition = {}) => {
     if (app.database(databaseType)) {
       const deletedItems = app
         .database(databaseType)
-        .delete(databaseName, condition);
+        .delete(databaseName, tableName, condition);
       
       console.log(
         `this commands deletes ${deletedItems} item(s).`

@@ -1,23 +1,28 @@
 import {
   loadState,
   storeState,
+  stateExists,
+  
   loadDataset,
   storeDataset,
-  stateExists,
   datasetExists,
+
   testExists,
   storeTest,
-  loadTest
+
+  testCaseExists,
+  storeTestCase
 } from "./state";
 
 class App {
 
   constructor() {
     this.cmd = undefined;
+    this.currentTester = undefined;
     
     if (!stateExists()) storeState({
       datasets: [],
-      currentTest: undefined
+      currentTestCase: undefined
     });
 
     if (!datasetExists()) storeDataset({
@@ -26,7 +31,11 @@ class App {
 
     if(!testExists()) storeTest({
       tests: []
-    })
+    });
+
+    if(!testCaseExists()) storeTestCase({
+      tests: []
+    });
   }
 
   databases(list = []) {
@@ -34,6 +43,16 @@ class App {
       ...list
     ];
     return this;
+  }
+
+  test(tester) {
+    this.currentTester = tester;
+    return this;
+  }
+
+  tester() {
+    if (!this.currentTester) throw new Error("You need define a tester!");
+    return this.currentTester;
   }
 
   database(name) {
@@ -99,85 +118,6 @@ class App {
   listDataset() {
     const state = loadState();
     return state.datasets;
-  }
-
-  createTest(name) {
-    let file = loadTest();
-    if(
-      file.tests.map(a => a.name)
-      .includes(name)
-    ) {
-      console.log("you cannot have two tests with same name.");
-      return;
-    }
-
-    let state = loadState();
-    state = {
-      ...state,
-      currentTest: name
-    }
-    storeState(state);
-
-    file.tests = [
-      ...file.tests,
-      {
-        name,
-        commands: []
-      }
-    ];
-    storeTest(file);
-  }
-
-  listTest() {
-    const file = loadTest();
-    return file.tests;
-  }
-
-  updateTest(command) {
-    const file = loadTest();
-    let test = this.getTest(); 
-    if (test){
-      test = {
-        ...test,
-        commands: [
-          ...test.commands,
-          command
-        ]
-      };
-
-      file.tests = [...file.tests
-        .filter(a => a.name !== test.name),
-        test
-      ];
-      storeTest(file);
-    }
-  }
-
-  getTest(name = undefined) {
-    const state = loadState();
-    if (name === undefined) {
-      name = state.currentTest;
-    }
-    const file = loadTest();
-    const test = file.tests.filter(
-      a => a.name === name
-    )[0]; 
-
-    return test;
-  }
-
-  thereIsTest() {
-    const state = loadState();
-    return state.currentTest ? true : false;
-  }
-
-  saveTest() {
-    let state = loadState();
-    state = {
-      ...state,
-      currentTest: undefined
-    }
-    storeState(state);
   }
 
   play() {

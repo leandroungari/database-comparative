@@ -1,6 +1,7 @@
 import app from "./app";
 import interpreter from "./interpreter";
 import timer from "./timer";
+import tester from "./tester";
 
 import {
   cmd, 
@@ -10,6 +11,7 @@ import {
 } from "./commands";
 
 app
+  .test(tester)
   .databases()
   .interpreter(
     interpreter
