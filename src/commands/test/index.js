@@ -6,6 +6,8 @@ const testCommands = {
     app.tester().createTestCase(name);
     console.log("all commands executed until the end-test-case will be part of the test case.");
   },
+
+
   "list-test-case": () => {
     console.log("=> list of tests-case:");
     if (app.tester().listTestCase().length === 0) 
@@ -16,6 +18,8 @@ const testCommands = {
         console.log(`#${index} ${item.name}`);
       });
   },
+  
+
   "end-test-case": () => {
     const currentTestCaseName = app.tester()
       .getTestCase().name;
@@ -24,6 +28,8 @@ const testCommands = {
       `test-case "${currentTestCaseName}" finished`
     );
   },
+
+
   "show-stats": (name="") => {
     const test = app.tester().getTest(name);
     if (name === "") {
@@ -44,6 +50,8 @@ const testCommands = {
       );
     });
   },
+
+
   "run-test": (testName, testCaseName = "", times = undefined) => {
     const testCase = app.tester()
     .getTestCase(testCaseName);
@@ -80,7 +88,20 @@ const testCommands = {
 
     app.tester()
     .createTest(testName, testCase, timeOfCommands);
-  }
+  },
+
+  "list-test": () => {
+    console.log("=> list of tests:");
+    if (app.tester().listTest().length === 0) 
+      console.log("there's no tests.");
+    else 
+      app.tester().listTest()
+      .forEach((item, index) => {
+        console.log(`#${index} ${item.name}`);
+      });
+  },
+
+  
 }
 
 const min = list => {

@@ -10,9 +10,15 @@ import {
   test
 } from "./commands";
 
+import {
+  mongoDB
+} from "./database";
+
 app
   .test(tester)
-  .databases()
+  .databases([
+    mongoDB
+  ])
   .interpreter(
     interpreter
     .timer(timer)

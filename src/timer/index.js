@@ -1,19 +1,30 @@
+import { loadState, storeState } from "../app/state";
+
 class Timer {
   constructor() {
-    this.timeOne = undefined;
-    this.timeTwo = undefined;
   }
 
   start() {
-    this.timeOne = process.hrtime();
+    let state = loadState();
+    state = {
+      ...state,
+      timeStart: process.hrtime()
+    };
+    storeState(state);
   }
 
   end() {
-    this.timeTwo = process.hrtime(this.timeOne);
+    let state = loadState();
+    state = {
+      ...state,
+      timeEnd: process.hrtime(state.timeStart)
+    };
+    storeState(state);
   }
 
   timeInMs() {
-    return this.timeTwo[1]/1000000;
+    const state = loadState();
+    return state.timeEnd[1]/1000000;
   }
 }
 

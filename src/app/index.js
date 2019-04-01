@@ -22,7 +22,9 @@ class App {
     
     if (!stateExists()) storeState({
       datasets: [],
-      currentTestCase: undefined
+      currentTestCase: undefined,
+      timeStart: undefined,
+      timeEnd: undefined
     });
 
     if (!datasetExists()) storeDataset({

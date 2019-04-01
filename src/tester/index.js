@@ -131,6 +131,11 @@ class Test {
     )[0]; 
     return test;
   }
+
+  listTest() {
+    const file = loadTest();
+    return file.tests;
+  }
 }
 
 const test = new Test();

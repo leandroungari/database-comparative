@@ -23,6 +23,10 @@ class Interpreter {
     return this;
   }
 
+  time() {
+    return this.currentTimer;
+  }
+
   commands(commands = {}) {
     this.listOfCommands = commands;
     return this;
@@ -51,14 +55,10 @@ class Interpreter {
       .includes(currentCommand.type)
     ) {
 
-      this.currentTimer.start();
-      ///////////////////////////
       this.listOfCommands[
         currentCommand.type
       ](...currentCommand.options);
-      ///////////////////////////
-      this.currentTimer.end();
-        
+
       if (!noTest) this
         .processingTest(currentCommand, message);
     }
