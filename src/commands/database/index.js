@@ -1,5 +1,5 @@
 import app from "../../app";
-import interpreter from "../interpreter";
+import interpreter from "../../interpreter";
 
 const databaseCommands = {
   "insert-database": (
@@ -9,7 +9,7 @@ const databaseCommands = {
   ) => {
     
     app
-    .database(databaseType, databaseName, () => {
+    .database(databaseType, databaseName, (db) => {
       interpreter.time().start();
       const insertedItems = db.insert(datasetName);
       interpreter.time().end();
@@ -25,10 +25,8 @@ const databaseCommands = {
     tableName,
     condition = {}
   ) => {
-    const db = app
-    .database(databaseType, databaseName);
-    
-    if(db) {
+    app
+    .database(databaseType, databaseName, (db) => {
       interpreter.time().start();
       const result = db.read(tableName, condition);
       interpreter.time().end();
@@ -40,7 +38,7 @@ const databaseCommands = {
           )
         );
       }
-    }
+    });
   },
   "update-database": (
     databaseType, 
@@ -49,9 +47,8 @@ const databaseCommands = {
     condition = {}, 
     values = {}
   ) => {
-    const db = app
-    .database(databaseType, databaseName);
-    if (db) {
+    app
+    .database(databaseType, databaseName, db => {
       interpreter.time().start();
       const updatedItems = db
       .update(tableName, condition, values);
@@ -59,12 +56,11 @@ const databaseCommands = {
       console.log(
         `this commands updates ${updatedItems} item(s).`
       );
-    }
+    });
   },
   "delete-database": (databaseType, databaseName, tableName, condition = {}) => {
-    const db = app
-    .database(databaseType, databaseName);
-    if (db) {
+    app
+    .database(databaseType, databaseName, (db) => {
       interpreter.time().start();
       const deletedItems = db
       .delete(tableName, condition);
@@ -73,7 +69,7 @@ const databaseCommands = {
       console.log(
         `this commands deletes ${deletedItems} item(s).`
       );
-    }
+    });
   }
 }
 

@@ -1,5 +1,5 @@
 import {MongoClient} from "mongodb";
-import interpreter from "../interpreter";
+
 
 export default class MongoDB {
   constructor() {
@@ -8,30 +8,23 @@ export default class MongoDB {
 
   connect(databaseName, callback) {
     
+    callback(this);
   }
 
   insert() {
-    interpreter.time().start();
-
-    interpreter.time().end();
+    
   }
 
   read() {
-    interpreter.time().start();
-
-    interpreter.time().end();
+    
   }
 
   update() {
-    interpreter.time().start();
-
-    interpreter.time().end();
+    
   }
 
   delete() {
-    interpreter.time().start();
-
-    interpreter.time().end();
+    
   }
 
 

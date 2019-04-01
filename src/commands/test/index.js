@@ -52,7 +52,12 @@ const testCommands = {
   },
 
 
-  "run-test": (testName, testCaseName = "", times = undefined) => {
+  "run-test": (
+    testName, 
+    testCaseName = "", 
+    times = undefined
+  ) => {
+    
     const testCase = app.tester()
     .getTestCase(testCaseName);
 
@@ -61,7 +66,9 @@ const testCommands = {
       return;
     } 
     else if (times === undefined) {
-      console.log("you must define number of repeats.");
+      console.log(
+        "you must define number of repeats."
+      );
       return;
     }
     else if (!testCase) {
