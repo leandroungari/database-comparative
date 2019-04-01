@@ -57,12 +57,18 @@ class App {
     return this.currentTester;
   }
 
-  database(name) {
-    const database = this.listOfDatabases
-      .filter(a => a.name === name)[0];
+  database(databaseType, name) {
+    const db = this.listOfDatabases
+      .filter(a => a.name === databaseType)[0];
     
-    if (!database) console
+    if (!db) {
+      console
       .log("database not found.");
+      throw new Error("Database not found!");
+    }
+    
+    const {database} = db;
+    database.connect(name);
     return database;
   }
 

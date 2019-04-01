@@ -7,11 +7,10 @@ const databaseCommands = {
     datasetName
   ) => {
     
-    if (app.database(databaseType)) {
-      const insertedItems = app
-      .database(databaseType)
-      .insert(databaseName, datasetName);
-    
+    const db = app
+    .database(databaseType, databaseName);
+    if (db) {
+      const insertedItems = db.insert(datasetName);
       console.log(
         `this commands inserts ${insertedItems} item(s).`
       );
@@ -23,9 +22,11 @@ const databaseCommands = {
     tableName,
     condition = {}
   ) => {
-    if (app.database(databaseType)) {
-      const result = app.database(databaseType)
-      .read(databaseName, tableName, condition);
+    const db = app
+    .database(databaseType, databaseName);
+    
+    if(db) {
+      const result = db.read(tableName, condition);
 
       if (result.length <= 30) {
         result.forEach((item, index) => 
@@ -43,10 +44,11 @@ const databaseCommands = {
     condition = {}, 
     values = {}
   ) => {
-    if (app.database(databaseType)) {
-      const updatedItems = app
-        .database(databaseType)
-        .update(databaseName, tableName, condition, values);
+    const db = app
+    .database(databaseType, databaseName);
+    if (db) {
+      const updatedItems = db
+      .update(tableName, condition, values);
       
       console.log(
         `this commands updates ${updatedItems} item(s).`
@@ -54,10 +56,11 @@ const databaseCommands = {
     }
   },
   "delete-database": (databaseType, databaseName, tableName, condition = {}) => {
-    if (app.database(databaseType)) {
-      const deletedItems = app
-        .database(databaseType)
-        .delete(databaseName, tableName, condition);
+    const db = app
+    .database(databaseType, databaseName);
+    if (db) {
+      const deletedItems = db
+        .delete(tableName, condition);
       
       console.log(
         `this commands deletes ${deletedItems} item(s).`
