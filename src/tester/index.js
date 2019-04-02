@@ -96,6 +96,7 @@ class Test {
   }
 
   createTest(testName, testCase, timeOfCommands) {
+    
     const file = loadTest();
 
     const result = {
@@ -104,11 +105,11 @@ class Test {
     }
 
     result.commands = testCase.commands
-    .map(({command}) => {
+    .map(({command}, index) => {
       return {
         command,
         stats: {
-          time: timeOfCommands[command]
+          time: timeOfCommands[`${index} - ${command}`]
         }
       }
     })
@@ -117,6 +118,7 @@ class Test {
       ...file.tests,
       result
     ];
+
     storeTest(file);
   }
 
@@ -130,6 +132,11 @@ class Test {
       a => a.name === name
     )[0]; 
     return test;
+  }
+
+  listTest() {
+    const file = loadTest();
+    return file.tests;
   }
 }
 

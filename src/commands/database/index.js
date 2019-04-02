@@ -1,21 +1,27 @@
 import app from "../../app";
+import interpreter from "../../interpreter";
+import { getDataset } from "../../app/dataset";
 
 const databaseCommands = {
-  "insert-database": (
+  "insert-database": async (
     databaseType, 
     databaseName, 
     datasetName
   ) => {
     
-    if (app.database(databaseType)) {
-      const insertedItems = app
-      .database(databaseType)
-      .insert(databaseName, datasetName);
+    const db = await app
+    .database(databaseType, databaseName);
+    const {data} = getDataset(datasetName);
+    interpreter.time().start();
+    const items = await db.insert(datasetName, data);
+    interpreter.time().end();
     
-      console.log(
-        `this commands inserts ${insertedItems} item(s).`
-      );
-    }
+    db.close();
+    console.log(
+      `this commands inserts ${items} item(s).`
+    );  
+
+    return interpreter.time().timeInMs();
   },
   "read-database": (
     databaseType, 
@@ -23,17 +29,19 @@ const databaseCommands = {
     tableName,
     condition = {}
   ) => {
-    if (app.database(databaseType)) {
-      const result = app.database(databaseType)
-      .read(databaseName, tableName, condition);
+    
+    const db = await app
+    .database(databaseType, databaseName);
+    interpreter.time().start();
+    const result = db.read(tableName, condition);
+    interpreter.time().end();
 
-      if (result.length <= 30) {
-        result.forEach((item, index) => 
-          console.log(
-            `${index} => ${JSON.stringify(item)}`
-          )
-        );
-      }
+    if (result.length <= 30) {
+      result.forEach((item, index) => 
+        console.log(
+          `${index} => ${JSON.stringify(item)}`
+        )
+      );
     }
   },
   "update-database": (
@@ -43,26 +51,34 @@ const databaseCommands = {
     condition = {}, 
     values = {}
   ) => {
-    if (app.database(databaseType)) {
-      const updatedItems = app
-        .database(databaseType)
-        .update(databaseName, tableName, condition, values);
-      
-      console.log(
-        `this commands updates ${updatedItems} item(s).`
-      );
-    }
+    const db = await app
+    .database(databaseType, databaseName);
+    interpreter.time().start();
+    const updatedItems = db
+    .update(tableName, condition, values);
+    interpreter.time().end();
+    console.log(
+      `this commands updates ${updatedItems} item(s).`
+    );
   },
-  "delete-database": (databaseType, databaseName, tableName, condition = {}) => {
-    if (app.database(databaseType)) {
-      const deletedItems = app
-        .database(databaseType)
-        .delete(databaseName, tableName, condition);
+  "delete-database": (
+    databaseType, 
+    databaseName, 
+    tableName, 
+    condition = {}
+  ) => {
+    
+    const db = await app
+    .database(databaseType, databaseName);
+
+    interpreter.time().start();
+    const deletedItems = db
+    .delete(tableName, condition);
+    interpreter.time().end();
       
-      console.log(
-        `this commands deletes ${deletedItems} item(s).`
-      );
-    }
+    console.log(
+      `this commands deletes ${deletedItems} item(s).`
+    );
   }
 }
 

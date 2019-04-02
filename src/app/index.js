@@ -22,7 +22,9 @@ class App {
     
     if (!stateExists()) storeState({
       datasets: [],
-      currentTestCase: undefined
+      currentTestCase: undefined,
+      timeStart: undefined,
+      timeEnd: undefined
     });
 
     if (!datasetExists()) storeDataset({
@@ -55,13 +57,18 @@ class App {
     return this.currentTester;
   }
 
-  database(name) {
-    const database = this.listOfDatabases
-      .filter(a => a.name === name)[0];
+  async database(databaseType, name) {
+    const db = this.listOfDatabases
+      .filter(a => a.name === databaseType)[0];
     
-    if (!database) console
+    if (!db) {
+      console
       .log("database not found.");
-    return database;
+      throw new Error("Database not found!");
+    }
+    
+    const {database} = db;
+    return await database.connect(name);
   }
 
   interpreter(cmd) {
@@ -69,55 +76,6 @@ class App {
       this.cmd = cmd;
     } 
     return this;
-  }
-
-  createDataset(name, data) {
-    const state = loadState();
-  
-    if(
-      state.datasets
-      .map(a => a.name)
-      .includes(name)
-    ) return;
-
-    state.datasets = [
-      ...state.datasets,
-      {name, size: data.length}
-    ];
-    storeState(state);
-
-    const file = loadDataset();
-    file.datasets = [
-      ...file.datasets,
-      {name, data}
-    ];
-    storeDataset(file);
-  }
-
-  deleteDataset(name) {
-    const state = loadState();
-
-    if (
-      !state.datasets
-      .map(a => a.name)
-      .includes(name)
-    ) return;
-
-    state.datasets = 
-      state.datasets
-      .filter(a => a.name !== name);
-    storeState(state);
-
-    const file = loadDataset();
-    file.datasets = 
-      file.datasets
-      .filter(a => a.name !== name);
-    storeDataset(file);
-  }
-
-  listDataset() {
-    const state = loadState();
-    return state.datasets;
   }
 
   play() {

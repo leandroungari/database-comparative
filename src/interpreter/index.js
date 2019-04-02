@@ -23,12 +23,16 @@ class Interpreter {
     return this;
   }
 
+  time() {
+    return this.currentTimer;
+  }
+
   commands(commands = {}) {
     this.listOfCommands = commands;
     return this;
   }
 
-  prompt() {
+  async prompt() {
     while(this.isRunning) {
       setTimeout(() => {
         
@@ -38,33 +42,31 @@ class Interpreter {
         limit: null
       });
 
-      this.run(message);
+      await this.run(message);
     }
   }
 
-  run(message, noTest = false) {
+  async run(message, noTest = false) {
 
     const currentCommand = this.processMessage(message);
-
+    let time = -1;
     if(
       Object.keys(this.listOfCommands)
       .includes(currentCommand.type)
     ) {
 
-      this.currentTimer.start();
-      ///////////////////////////
-      this.listOfCommands[
+      time = await this.listOfCommands[
         currentCommand.type
       ](...currentCommand.options);
-      ///////////////////////////
-      this.currentTimer.end();
-        
+
       if (!noTest) this
         .processingTest(currentCommand, message);
     }
     else {
       console.log("command not found, try again.");
     }
+
+    return time;
   }
 
   processingTest(currentCommand, message) {
@@ -92,7 +94,7 @@ class Interpreter {
 
   render() {
     
-    this.prompt();
+    Promise.all([this.prompt()]);
   }
 }
 
