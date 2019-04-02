@@ -1,6 +1,6 @@
-import app from "../../app";
+import * as dataset from "../../app/dataset";
 
 export const deleteDataset = name => {
 
-  app.deleteDataset(name);
+  dataset.deleteDataset(name);
 }

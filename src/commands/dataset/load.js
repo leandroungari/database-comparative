@@ -1,17 +1,18 @@
 import fs from "fs";
-import app from "../../app";
+import * as dataset from "../../app/dataset";
+
 
 export const loadDataset = (options) => {
   
   switch(options.type) {
     case "csv":
       const data = readCSVFile(options.from);      
-      app.createDataset(options.name, data);
+      dataset.createDataset(options.name, data);
       
       break;
     case "json":
       const result = readJSONFile(options.from);
-      app.createDataset(options.name, result);
+      dataset.createDataset(options.name, result);
       break;
     default:
       return;
