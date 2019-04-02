@@ -52,7 +52,7 @@ const testCommands = {
   },
 
 
-  "run-test": (
+  "run-test": async (
     testName, 
     testCaseName = "", 
     times = undefined
@@ -76,21 +76,27 @@ const testCommands = {
       return;
     }
 
-    const timeOfCommands = {};
+    let timeOfCommands = {};
     console.log(`test ${testName} started.`)
     console.log(`running test-case ${testCase.name} ...`);
+    
     for(let i = 0; i < times; i++) {  
-      testCase.commands.forEach(({command}) => {
-        interpreter.run(command, true);
-        timeOfCommands[command] = [
+      await testCase.commands.reduce(
+      async (total, {command}, index) => {
+        
+        const time = await interpreter
+        .run(command, true);
+        
+        total[`${index} - ${command}`] = [
           ...(
-            timeOfCommands[command] ? 
-            timeOfCommands[command] :
+            total[`${index} - ${command}`] ? 
+            total[`${index} - ${command}`] :
             []
           ),
-          interpreter.currentTimer.timeInMs()
+          time
         ];
-      });
+        return total;
+      }, timeOfCommands);
     }
 
     app.tester()

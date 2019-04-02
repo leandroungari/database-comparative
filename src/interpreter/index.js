@@ -32,7 +32,7 @@ class Interpreter {
     return this;
   }
 
-  prompt() {
+  async prompt() {
     while(this.isRunning) {
       setTimeout(() => {
         
@@ -42,20 +42,20 @@ class Interpreter {
         limit: null
       });
 
-      this.run(message);
+      await this.run(message);
     }
   }
 
-  run(message, noTest = false) {
+  async run(message, noTest = false) {
 
     const currentCommand = this.processMessage(message);
-
+    let time = -1;
     if(
       Object.keys(this.listOfCommands)
       .includes(currentCommand.type)
     ) {
 
-      this.listOfCommands[
+      time = await this.listOfCommands[
         currentCommand.type
       ](...currentCommand.options);
 
@@ -65,6 +65,8 @@ class Interpreter {
     else {
       console.log("command not found, try again.");
     }
+
+    return time;
   }
 
   processingTest(currentCommand, message) {
@@ -92,7 +94,7 @@ class Interpreter {
 
   render() {
     
-    this.prompt();
+    Promise.all([this.prompt()]);
   }
 }
 

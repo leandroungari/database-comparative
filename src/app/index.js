@@ -57,7 +57,7 @@ class App {
     return this.currentTester;
   }
 
-  database(databaseType, name, callback) {
+  async database(databaseType, name) {
     const db = this.listOfDatabases
       .filter(a => a.name === databaseType)[0];
     
@@ -68,7 +68,7 @@ class App {
     }
     
     const {database} = db;
-    database.connect(name, callback);
+    return await database.connect(name);
   }
 
   interpreter(cmd) {

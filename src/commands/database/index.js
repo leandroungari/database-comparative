@@ -2,22 +2,25 @@ import app from "../../app";
 import interpreter from "../../interpreter";
 
 const databaseCommands = {
-  "insert-database": (
+  "insert-database": async (
     databaseType, 
     databaseName, 
     datasetName
   ) => {
     
-    app
-    .database(databaseType, databaseName, (db) => {
-      interpreter.time().start();
-      const insertedItems = db.insert(datasetName);
-      interpreter.time().end();
-      console.log(
-        `this commands inserts ${insertedItems} item(s).`
-      );
-    });
+    const db = await app
+    .database(databaseType, databaseName);
+  
+    interpreter.time().start();
+    const items = await db.insert(datasetName);
+    interpreter.time().end();
     
+    db.close();
+    console.log(
+      `this commands inserts ${items} item(s).`
+    );  
+
+    return interpreter.time().timeInMs();
   },
   "read-database": (
     databaseType, 
