@@ -14,7 +14,7 @@ export default class MongoDB {
     this.client = undefined;
   }
 
-  connect(databaseName) {
+  async connect(databaseName) {
     
     this.client = new MongoClient(url);
     await this.client.connect();
@@ -37,7 +37,7 @@ export default class MongoDB {
     throw new Error("mongo-db insert error");
   }
 
-  read(collection, condition) {
+  async read(collection, condition) {
     try {
       const result = await this.database
       .collection(collection)
@@ -52,7 +52,7 @@ export default class MongoDB {
     throw new Error("mongo-db read error");
   }
 
-  update(collection, condition, values) {
+  async update(collection, condition, values) {
     try {
       const result = await this.database
       .collection(collection)
@@ -67,7 +67,7 @@ export default class MongoDB {
     throw new Error("mongo-db update error");
   }
 
-  delete(collection, condition) {
+  async delete(collection, condition) {
     try {
       const result = this.database
       .collection(collection)

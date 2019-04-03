@@ -23,7 +23,7 @@ const databaseCommands = {
 
     return interpreter.time().timeInMs();
   },
-  "read-database": (
+  "read-database": async (
     databaseType, 
     databaseName, 
     tableName,
@@ -33,7 +33,7 @@ const databaseCommands = {
     const db = await app
     .database(databaseType, databaseName);
     interpreter.time().start();
-    const result = db.read(tableName, condition);
+    const result = await db.read(tableName, condition);
     interpreter.time().end();
 
     if (result.length <= 30) {
@@ -44,7 +44,7 @@ const databaseCommands = {
       );
     }
   },
-  "update-database": (
+  "update-database": async (
     databaseType, 
     databaseName, 
     tableName,
@@ -54,14 +54,14 @@ const databaseCommands = {
     const db = await app
     .database(databaseType, databaseName);
     interpreter.time().start();
-    const updatedItems = db
+    const updatedItems = await db
     .update(tableName, condition, values);
     interpreter.time().end();
     console.log(
       `this commands updates ${updatedItems} item(s).`
     );
   },
-  "delete-database": (
+  "delete-database": async (
     databaseType, 
     databaseName, 
     tableName, 
@@ -72,7 +72,7 @@ const databaseCommands = {
     .database(databaseType, databaseName);
 
     interpreter.time().start();
-    const deletedItems = db
+    const deletedItems = await db
     .delete(tableName, condition);
     interpreter.time().end();
       

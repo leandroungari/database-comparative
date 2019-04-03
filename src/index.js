@@ -11,13 +11,15 @@ import {
 } from "./commands";
 
 import {
-  mongoDB
+  mongoDB, 
+  mysql
 } from "./database";
 
 app
   .test(tester)
   .databases([
-    mongoDB
+    mongoDB,
+    mysql
   ])
   .interpreter(
     interpreter
