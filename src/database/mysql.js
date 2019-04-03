@@ -24,6 +24,7 @@ export default class MySQL {
 
   async insert(collectionName, data) {
     //obter o model de algum jeito
+    // chamar sync()
     try {
       for(const item of data) {
         const result = await this.model.create(item);
@@ -41,7 +42,7 @@ export default class MySQL {
 
   async read(collection, condition) {
     //obter o model de algum jeito
-
+    // chamar sync()
     try {
       const result = await this.model
       .findAll({where: condition});
@@ -55,6 +56,8 @@ export default class MySQL {
   }
 
   async update(collection, condition, values) {
+    //obter o model de algum jeito
+    // chamar sync()
     try {
       const result = await this.model
       .update(values, {
@@ -72,6 +75,7 @@ export default class MySQL {
 
   async delete(collection, condition) {
     //obter o model de algum jeito
+    // chamar sync()
     try {
       const result = await this.model
       .destroy(condition);
