@@ -20,6 +20,10 @@ class App {
     this.cmd = undefined;
     this.currentTester = undefined;
     
+    this.createAppFiles();
+  }
+
+  createAppFiles() {
     if (!stateExists()) storeState({
       datasets: [],
       currentTestCase: undefined,
@@ -37,6 +41,10 @@ class App {
 
     if(!testCaseExists()) storeTestCase({
       tests: []
+    });
+
+    if(!testCaseExists()) storeTestCase({
+      models: {}
     });
   }
 
